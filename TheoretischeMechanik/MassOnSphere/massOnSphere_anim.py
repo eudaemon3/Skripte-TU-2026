@@ -67,7 +67,7 @@ time, x,y,z = generalTrjectory(p02, 8.0)
 
 fig = plt.figure(figsize=(6,6))
 ax = fig.add_subplot(111, projection='3d')
-ax.set_title("constraint Trajectory")
+ax.set_title(r"constraint Trajectory $\theta_0 = \pi/8$, $\dot \phi_0 = 1$")
 ax.set_box_aspect([1,1,1])
 ax.set_xlim(-1.1*R,1.1*R)
 ax.set_ylim(-1.1*R,1.1*R)
@@ -107,5 +107,7 @@ def update(i):
         case _: pass
     return point, trail
 
-ani = animation.FuncAnimation(fig, update, frames=range(0,len(time),2), init_func=init, interval=20, blit=False)
+fig.tight_layout()
+ani = animation.FuncAnimation(fig, update, frames=range(0,len(time)), init_func=init, interval=20, blit=False)
+ani.save('massOnSphere.gif', writer='pillow', fps=30, dpi=80)
 plt.show()
