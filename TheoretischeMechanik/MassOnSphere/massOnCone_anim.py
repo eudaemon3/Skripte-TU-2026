@@ -102,12 +102,9 @@ Ys = R*np.sin(Phi)*np.sin(theta)
 Zs = R*np.cos(theta)
 ax.plot_surface(Xs, Ys, Zs, color='black', alpha=0.12, linewidth=0)
 
-# plot the full trajectory immediately (rot, alpha=0.5)
-ax.plot(x, y, z, color='red', linewidth=1.5, alpha=0.5, label='Trajektorie (vollständig)')
+ax.plot(x, y, z, color='red', linewidth=1, alpha=0.5, label='Trajektorie (vollständig)')
 
-# start point (will be animated)
-point, = ax.plot([x[0]],[y[0]],[z[0]], marker='o', color='royalblue', markersize=6)
-
+point, = ax.plot([x[0]],[y[0]],[z[0]], marker='o', color='black', markersize=7)
 
 def init():
     point.set_data([x[0]],[y[0]])
@@ -118,7 +115,7 @@ def update(i):
     point.set_data([x[i]],[y[i]])
     point.set_3d_properties([z[i]])
 
-    azim = (i * 180/len(time)) % 360
+    azim = (i * 360/len(time)) % 360
     elev = 20
     ax.view_init(elev=elev, azim=azim)
 
@@ -127,7 +124,7 @@ def update(i):
 fig.tight_layout()
 
 # create animation
-ani = animation.FuncAnimation(fig, update, frames=range(0,len(time),4),
+ani = animation.FuncAnimation(fig, update, frames=range(0,len(time),2),
                               init_func=init, interval=20, blit=False)
-#ani.save('massOnSphere.gif', writer='pillow', fps=30, dpi=80)
+ani.save('massOnSphere.gif', writer='pillow', fps=15, dpi=60)
 plt.show()
