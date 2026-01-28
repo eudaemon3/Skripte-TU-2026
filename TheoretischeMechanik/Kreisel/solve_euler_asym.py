@@ -7,12 +7,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
-from plot_lib import plot_omega, animate_body_axis
+from plot_lib import animate_asym_spinner
 
-Theta1, Theta2, Theta3 = 0.5, 3, 6.0
-omega0 = [0.2, 1.0, 2.0]
-e_angle0 = [0, np.pi/12, 0.0]
-time = np.linspace(0, 80, 2000)
+Theta1, Theta2, Theta3 = 1.0, 1.0, 3.0
+omega0 = [0.1, 0.1, 2.0]
+e_angle0 = [0.0, np.pi/6, 0.0]
+time = np.linspace(0, 20, 500)
+
 
 def omega_dot(t, w):
     w1, w2, w3 = w
@@ -57,7 +58,6 @@ def R(phi, theta, psi):
 
 e3_inertial = np.array([R(phi[i], theta[i], psi[i]) @ np.array([0,0,1]) for i in range(len(phi))])
 
-ani1 = plot_omega(omega_vec)
-ani2 = animate_body_axis(e3_inertial)
-plt.tight_layout()
+ani = animate_asym_spinner(omega_vec, e3_inertial)
+ani.save("TheoretischeMechanik/Kreisel/plots/spin_asymetric_C01_anim.gif", writer="pillow", fps=20)
 plt.show()
