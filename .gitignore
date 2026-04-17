@@ -6,3 +6,6 @@
 .config/
 .cache/
 .ipynb_checkpoints
+.stignore
+
+*.pyc
