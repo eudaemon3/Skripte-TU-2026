@@ -51,5 +51,3 @@ class InfSquareWell:
             psi += c * self._phi_n(n, x2d) * np.exp(-1j * wn(n) * t2d)
 
         return psi, x, t
-
-
