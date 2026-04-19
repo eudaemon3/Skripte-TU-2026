@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.integrate import quad
+from scipy.integrate import quad, trapezoid
 
 m = 1
 hbar = 1
@@ -26,13 +26,13 @@ class InfSquareWell:
             return f * np.cos(kn(n)*x) 
         else:
             return f * np.sin(kn(n)*x)
-
-    def _phi(self, x: np.ndarray, k_0: float) -> np.ndarray:
+    
+    def _phi(self, x: np.ndarray) -> np.ndarray:
         f = 1/np.sqrt(self.s_0 * np.sqrt(2*np.pi))
-        return f * np.exp(-(x-self.x_0)**2 / (2*self.s_0)**2 + 1j*k_0*x)
+        return f * np.exp(-(x-self.x_0)**2 / (2*self.s_0)**2 + 1j*self.k_0*x)
 
-    def _integrand(self, x: np.ndarray, n: int, k_0: float) -> np.ndarray:
-        return np.conj(self._phi_n(n, x)) * self._phi(x, k_0)
+    def _integrand(self, x: np.ndarray, n: int,) -> np.ndarray:
+        return np.conj(self._phi_n(n, x)) * self._phi(x)
 
     def get_psi(self, rx: int, tx: int) -> tuple[np.ndarray]:
         wn = lambda n: hbar / (2*m) * (np.pi/self.a)**2 * n**2
@@ -46,7 +46,7 @@ class InfSquareWell:
 
         for i in range(self.N):
             n = i + 1
-            c, _ = quad(self._integrand, -self.a/2, self.a/2, args=(n, self.k_0, ), limit=200, complex_func=True)
+            c, _ = quad(self._integrand, -self.a/2, self.a/2, args=(n,), limit=200, complex_func=True)
 
             psi += c * self._phi_n(n, x2d) * np.exp(-1j * wn(n) * t2d)
 
