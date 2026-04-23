@@ -18,6 +18,9 @@ class InfSquareWell:
         self.s_0 = s_0
         self.k_0 = k_0
 
+    def _E_n(self, n: int) -> np.float64:
+        return hbar / (2*m) * (np.pi/self.a)**2 * n**2
+    
     def _phi_n(self, n: int, x: np.ndarray) -> np.ndarray:
         kn = lambda n: np.pi/self.a * n
         f = np.sqrt(2/self.a)
@@ -35,8 +38,6 @@ class InfSquareWell:
         return np.conj(self._phi_n(n, x)) * self._phi(x)
 
     def get_psi(self, rx: int, tx: int) -> tuple[np.ndarray]:
-        wn = lambda n: hbar / (2*m) * (np.pi/self.a)**2 * n**2
-
         x = np.linspace(-self.a/2, self.a/2, rx)
         t = np.linspace(0, self.tmax, tx)
         x2d = x[:, np.newaxis]
@@ -48,6 +49,9 @@ class InfSquareWell:
             n = i + 1
             c, _ = quad(self._integrand, -self.a/2, self.a/2, args=(n,), limit=200, complex_func=True)
 
-            psi += c * self._phi_n(n, x2d) * np.exp(-1j * wn(n) * t2d)
+            psi += c * self._phi_n(n, x2d) * np.exp(-1j * self._E_n(n) * t2d)
 
         return psi, x, t
+    
+    def get_mu(self, psi: np.ndarray) -> np.ndarray:
+        return np.argmax(psi, axis=0)
