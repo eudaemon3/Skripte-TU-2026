@@ -24,7 +24,7 @@ s_0 = a*0.05     # Breite der Gauss-Kurve
 N = 500          # Anzahl berechneter Basisvektoren
 
 rx = 1001        # x Achse sampling
-tx = 801        # Zeit Achste sampling
+tx = 1001        # Zeit Achste sampling
 
 tau = 2 * s_0**2
 k_0 = 5 * a / tau
